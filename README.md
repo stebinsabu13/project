@@ -10,7 +10,8 @@ run the following command on the terminal   git clone https://github.com/stebins
 
 # Requesting endpoints
 
-1) CREATING A NEW USER - POST localhost:4000/user ,request this endpoint with this following json binding 
+1) CREATING A NEW USER - 
+   POST localhost:4000/user ,request this endpoint with this following json binding 
    {
       "firstname":"abc",
       "lastname":"def",
@@ -19,9 +20,11 @@ run the following command on the terminal   git clone https://github.com/stebins
   }
   here the email and mobilenum fields should be in the valid format of an email and mobile number 
 
-2) GET USER BY ID  - GET localhost:4000/user?id=1, request this endpoint. The user is retreived if user exists or else an error message is shown
+2) GET USER BY ID  - 
+   GET localhost:4000/user?id=1, request this endpoint. The user is retreived if user exists or else an error message is shown
 
-3) UPDATE USER BY ID - PATCH localhost:4000/user?id=1, request this endpoint with this following json binding 
+3) UPDATE USER BY ID - 
+   PATCH localhost:4000/user?id=1, request this endpoint with this following json binding 
    {
       "firstname":"abc",
       "lastname":"def",
@@ -29,8 +32,10 @@ run the following command on the terminal   git clone https://github.com/stebins
       "mobilenum":"1234567890"
     }
 
-4) DELETE USER BY ID - DELETE localhost:4000/user?id=1, request this endpoint. The user is deleted.
-5) API FOR DEMONSTRATING CONCURRENCY AND SEQUANTIAL EXECUTION  -  POST  localhost:4000/methods, request this endpoin with the following json binding
+4) DELETE USER BY ID - 
+   DELETE localhost:4000/user?id=1, request this endpoint. The user is deleted.
+5) API FOR DEMONSTRATING CONCURRENCY AND SEQUANTIAL EXECUTION  -  
+   POST  localhost:4000/methods, request this endpoin with the following json binding
   {
     "method":1,
     "waitTime":30
