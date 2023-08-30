@@ -1,0 +1,83 @@
+version: '3'
+
+name: tentioncrew_task
+services:
+  db-postgres:
+    image: postgres:alpine
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    networks:
+      - mynet
+    ports:
+      - 5000:5432
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+
+  rdb-redis:
+    image: redis
+    networks:
+      - mynet
+    ports:
+      - 5001:6379
+    volumes:
+      - redis-rdb:/data
+
+  microservice1:
+    image: stebin13/tentioncrew_microservice1
+    environment:
+      - PORT=${USER_SRV_PORT}
+      - DB_PORT=${DB_PORT}
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - REDIS_ADDRESS=${REDIS_ADDRESS}
+    networks:
+      - mynet
+    ports:
+      - 4001:4001
+    volumes:
+      - ./microservice-1:/usr/src/app
+    depends_on:
+      - db-postgres
+      - rdb-redis
+
+  microservice2:
+    image: stebin13/tentioncrew_microservice2
+    environment:
+      - PORT=${METHOD_SRV_PORT}
+      - USER_SRV=${USER_SRV}
+    networks:
+      - mynet
+    ports:
+      - 4002:4002
+    volumes:
+      - ./microservice-2:/usr/src/app
+    depends_on:
+      - microservice1
+
+  api_gateway:
+    image: stebin13/tentioncrew_api-gateway:2.0
+    environment:
+      - PORT=${PORT}
+      - USER_SRV=${USER_SRV}
+      - METHOD_SRV=${METHOD_SRV}
+    networks:
+      - mynet
+    ports:
+      - 4000:4000
+    volumes:
+      - ./api-gateway:/usr/src/app
+    depends_on:
+      - microservice1
+      - microservice2
+
+volumes:
+  postgres-db:
+  redis-rdb:
+
+networks:
+  mynet:
+    driver: bridge
